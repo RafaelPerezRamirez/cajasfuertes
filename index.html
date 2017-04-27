@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Cajas Fuertes</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script>
+            /**
+            * Builds a array shuffle
+            * @param {array} array - array to shuffle
+            */
+            function shuffle(array) {
+                var currentIndex = array.length, temporaryValue, randomIndex;
+                while (0 !== currentIndex) {
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                }
+                return array;
+            }
+            /*
+            ++ Returns merge @valuableObjects with @safes
+            */
+            function createArrays(){
+                // Private Main Array
+                var valuableObjects = [
+                    "Santo Grial",
+                    "Pintura Paloma Con Guisantes",
+                    "Arca De La Alianza",
+                    "Diamante Hope",
+                    "Espada Tizona Del Cid"
+                ];
+                var safes = new Array(20);
+                safes.splice(15, safes.length, ...valuableObjects);
+                return safes;
+            }
+            /*
+            ++ Print a list of elements of an shuffle array
+            */
+            function print(){
+                var safes = createArrays();
+                safes = shuffle(safes);
+                for (var i = 0; i < safes.length; i++) {
+                    var key = safes[i];
+                    if (!key) { key = 'Vacio'; }
+                    $('#content').append('caja '+(i+1)+' = '+key+'<br>');
+                }
+            }
+            $( document ).ready(function() {
+                var safes = createArrays();
+                $('.form-nights').on('submit', function(e){
+                    e.preventDefault();
+                    $('#content').html('');
+                    var numberNights = $('.input-nights').val();
+                    for (var i = 0; i<numberNights; i++) {
+                        $('#content').append('<h1>Noche '+(i+1)+'</h1>');
+                        print();
+                        $('#content').append('<br>');
+                    }
+                })
+            });
+        </script>
+    </head>
+    <body>
+        <form class="form-nights">
+            <label><h3>Indica el numero de noches</h3></label>
+            <input type="text" class="input-nights" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+            <input type="submit" value="Enviar">
+        </form>
+        <div id="content"></div>
+    </body>
+</html>
